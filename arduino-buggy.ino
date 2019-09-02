@@ -5,10 +5,10 @@
 #define led_pin 13
 
 void setup() {
-    pinMode(dira_pin, OUTPUT);
-    pinMode(pwma_pin, OUTPUT);
-    pinMode(dirb_pin, OUTPUT);
-    pinMode(pwmb_pin, OUTPUT);
+    pinMode(right_dir_pin, OUTPUT);
+    pinMode(right_pwm_pin, OUTPUT);
+    pinMode(left_dir_pin, OUTPUT);
+    pinMode(left_pwm_pin, OUTPUT);
     pinMode(led_pin, OUTPUT);
 }
 
@@ -21,15 +21,15 @@ void setup() {
 //   Left motor rev at 50%
 //   Right motor rev at 75%
 void loop() {
-    analogWrite(pwma_pin, 64); // Send PWM signal to L298N Enable pin
-    analogWrite(pwmb_pin, 128); // Send PWM signal to L298N Enable pin
+    analogWrite(right_pwm_pin, 64); // Send PWM signal to L298N Enable pin
+    analogWrite(left_pwm_pin, 128); // Send PWM signal to L298N Enable pin
 
-    digitalWrite(dira_pin, LOW);
-    digitalWrite(dirb_pin, LOW);
+    digitalWrite(right_dir_pin, LOW);
+    digitalWrite(left_dir_pin, LOW);
     digitalWrite(led_pin, LOW);
     delay(1000);
-    digitalWrite(dira_pin, HIGH);
-    digitalWrite(dirb_pin, HIGH);
+    digitalWrite(right_dir_pin, HIGH);
+    digitalWrite(left_dir_pin, HIGH);
     digitalWrite(led_pin, HIGH);
     delay(2000);
 }
