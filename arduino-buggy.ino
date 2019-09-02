@@ -1,7 +1,7 @@
-#define pwma_pin 6
-#define dira_pin 7
-#define pwmb_pin 5
-#define dirb_pin 4
+#define right_pwm_pin 6
+#define right_dir_pin 7
+#define left_pwm_pin 5
+#define left_dir_pin 4
 #define led_pin 13
 
 void setup() {
@@ -33,4 +33,6 @@ void loop() {
     digitalWrite(led_pin, HIGH);
     delay(2000);
 }
+
+
 
