@@ -65,6 +65,8 @@ void set_drivemode( const drivemode_t desired_mode, const uint8_t desired_pwm )
   {
     actual_pwm = ramp_to_pwm( actual_pwm, desired_pwm );
   }
+
+  set_output( actual_mode, actual_pwm );
 }
 
 
@@ -90,6 +92,45 @@ uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
     else
     {
       actual += RAMP_STEP;
+    }
+  }
+}
+
+void set_output( const drivemode_t drivemode, const uint8_t pwm )
+{
+  switch( drivemode )
+  {
+    case DRIVE_FWD:
+    {
+      analogWrite(left_pwm_pin, pwm);
+      digitalWrite(left_dir_pin, LOW);
+      analogWrite(right_pwm_pin, pwm);
+      digitalWrite(right_dir_pin, LOW);
+      break;
+    }
+    case DRIVE_REV:
+    {
+      analogWrite(left_pwm_pin, 255-pwm);
+      digitalWrite(left_dir_pin, HIGH);
+      analogWrite(right_pwm_pin, 255-pwm);
+      digitalWrite(right_dir_pin, HIGH);
+      break;
+    }
+    case TURN_LEFT:
+    {
+      analogWrite(left_pwm_pin, 255-pwm);
+      digitalWrite(left_dir_pin, HIGH);
+      analogWrite(right_pwm_pin, pwm);
+      digitalWrite(right_dir_pin, LOW);
+      break;
+    }
+    case TURN_RIGHT:
+    {
+      analogWrite(left_pwm_pin, pwm);
+      digitalWrite(left_dir_pin, LOW);
+      analogWrite(right_pwm_pin, 255-pwm);
+      digitalWrite(right_dir_pin, HIGH);
+      break;
     }
   }
 }
