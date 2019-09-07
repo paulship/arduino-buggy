@@ -4,6 +4,15 @@
 #define left_dir_pin 4
 #define led_pin 13
 
+#define RAMP_STEP 5
+
+enum drivemode_t {
+  DRIVE_FWD,
+  DRIVE_REV,
+  TURN_LEFT,
+  TURN_RIGHT
+};
+
 void setup() {
     pinMode(right_dir_pin, OUTPUT);
     pinMode(right_pwm_pin, OUTPUT);
@@ -35,4 +44,52 @@ void loop() {
 }
 
 
+void set_drivemode( const drivemode_t desired_mode, const uint8_t desired_pwm )
+{
+  static drivemode_t actual_mode = DRIVE_FWD;
+  static uint8_t actual_pwm = 0;
 
+  if( desired_mode != actual_mode )
+  {
+    if( actual_pwm == 0 )
+    {
+      actual_mode = desired_mode;
+    }
+    else
+    {
+      actual_pwm = ramp_to_pwm( actual_pwm, 0 );
+    }
+    
+  }
+  else
+  {
+    actual_pwm = ramp_to_pwm( actual_pwm, desired_pwm );
+  }
+}
+
+
+uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
+{
+  if( target < actual )
+  {
+    if( ( actual - target ) < RAMP_STEP )
+    {
+      actual = target;
+    }
+    else
+    {
+      actual -= RAMP_STEP;
+    }
+  }
+  else
+  {
+    if( ( target - actual ) < RAMP_STEP )
+    {
+      actual = target;
+    }
+    else
+    {
+      actual += RAMP_STEP;
+    }
+  }
+}
