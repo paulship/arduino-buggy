@@ -46,18 +46,24 @@ void setup() {
 // For 2 seconds:
 //   Left motor rev at 50%
 //   Right motor rev at 75%
-void loop() {
-    analogWrite(right_pwm_pin, 64); // Send PWM signal to L298N Enable pin
-    analogWrite(left_pwm_pin, 128); // Send PWM signal to L298N Enable pin
+void loop()
+{
+  static const uint8_t n_instructions = sizeof(instructions) / sizeof(instructions[0]);
 
-    digitalWrite(right_dir_pin, LOW);
-    digitalWrite(left_dir_pin, LOW);
-    digitalWrite(led_pin, LOW);
-    delay(1000);
-    digitalWrite(right_dir_pin, HIGH);
-    digitalWrite(left_dir_pin, HIGH);
-    digitalWrite(led_pin, HIGH);
-    delay(2000);
+  for( uint8_t idx=0; idx<n_instructions; idx++ )
+  {
+    for( uint16_t t=0; t<instructions[idx].duration; t+=RAMP_TIME )
+    {
+      set_drivemode( instructions[idx].drivemode, instructions[idx].pwm );
+      delay( RAMP_TIME );
+    }
+  }
+
+  while( true )
+  {
+    set_drivemode( DRIVE_FWD, 0 );
+    delay( RAMP_TIME );
+  }
 }
 
 
