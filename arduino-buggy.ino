@@ -5,12 +5,29 @@
 #define led_pin 13
 
 #define RAMP_STEP 5
+#define RAMP_TIME 10
 
 enum drivemode_t {
   DRIVE_FWD,
   DRIVE_REV,
   TURN_LEFT,
   TURN_RIGHT
+};
+
+typedef struct
+{
+  drivemode_t drivemode;
+  uint8_t     pwm;
+  uint16_t    duration;
+} instruction_t;
+
+static const instruction_t instructions[] = 
+{
+  { DRIVE_FWD,  100,  5000 },
+  { TURN_LEFT,  100,  2000 },
+  { DRIVE_FWD,  200,  5000 },
+  { TURN_RIGHT, 100,  3000 },
+  { DRIVE_REV,  200,  2000 }
 };
 
 void setup() {
