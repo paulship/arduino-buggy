@@ -117,6 +117,8 @@ uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
       actual += RAMP_STEP;
     }
   }
+
+  return actual;
 }
 
 void set_output( const drivemode_t drivemode, const uint8_t pwm )
