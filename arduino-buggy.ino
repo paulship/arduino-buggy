@@ -97,6 +97,14 @@ void loop()
 }
 
 
+/*
+ * This function sets the drivemode. It is expected to be called repeatedly at the rate defined by RAMP_STEP, as
+ * it will be constantly ramping the output power to what is being requested. It works by comparing the desired
+ * drivemode and PWM against what it is actually doing. If the desired drivemode is the same as the actual
+ * drivemode, it will ramp the PWM to the desired level. If the desired drivemode is different ot the actual
+ * drivemode, it will ramp the PWM down to zero. Only when the PWM has reached zero will it set the actual drivemode
+ * to the desired drivemode.
+ */
 void set_drivemode( const drivemode_t desired_mode, const uint8_t desired_pwm )
 {
   static drivemode_t actual_mode = DRIVE_FWD;
@@ -123,6 +131,10 @@ void set_drivemode( const drivemode_t desired_mode, const uint8_t desired_pwm )
 }
 
 
+/*
+ * This is a ramping function. It ramps a value towards a target value by allowing it to change
+ * by no more than the value of RAMP_STEP.
+ */
 uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
 {
   if( target < actual )
