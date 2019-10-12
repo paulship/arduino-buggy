@@ -134,11 +134,16 @@ void set_drivemode( const drivemode_t desired_mode, const uint8_t desired_pwm )
 /*
  * This is a ramping function. It ramps a value towards a target value by allowing it to change
  * by no more than the value of RAMP_STEP.
+ * 
+ * If the difference between the target and actual is greater than RAMP_STEP, then we return the
+ * actual value +/- RAMP_STEP. If the difference between the target and actual is less than
+ * RAMP_STEP, then we just return the target value.
  */
 uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
 {
   if( target < actual )
   {
+    /* We do this if ramping down to 0% */
     if( ( actual - target ) < RAMP_STEP )
     {
       actual = target;
@@ -150,6 +155,7 @@ uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
   }
   else
   {
+    /* We do this if ramping up to 100% */
     if( ( target - actual ) < RAMP_STEP )
     {
       actual = target;
@@ -162,6 +168,7 @@ uint8_t ramp_to_pwm( uint8_t actual, uint8_t target )
 
   return actual;
 }
+
 
 void set_output( const drivemode_t drivemode, const uint8_t pwm )
 {
